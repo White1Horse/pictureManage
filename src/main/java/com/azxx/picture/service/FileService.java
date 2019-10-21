@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @version V1.0
@@ -50,7 +51,6 @@ public class FileService {
 //            appInfo.setCreateUser();
             appInfo.setReleaseDate(new Date());
             appInfo.setAppType("reactnative");
-            appInfo.setState("7");
             effectRows = fileInfoMapper.insert(appInfo);
         } else {
 //            appInfo.setUpdateUser();
@@ -58,6 +58,10 @@ public class FileService {
             effectRows = fileInfoMapper.updateByPrimaryKeySelective(appInfo);
         }
         return effectRows > 0 ? true : false;
+    }
+
+    public List<AppInfo> selectState() {
+        return fileInfoMapper.selectState();
     }
 
 //    public boolean deleteFile(String ids) {

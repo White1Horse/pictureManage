@@ -5,7 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,7 +67,7 @@ public class FileController extends BaseController {
 
     @Value("${img.imgName}")
     private String imgName;
-    
+
     @Autowired
     public FileController(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -77,13 +80,13 @@ public class FileController extends BaseController {
 
 //        String fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         try {
-            if (null==appInfo.getAppId()){
+            if (null == appInfo.getAppId()) {
                 return paramsError();
             }
-            String pathName = filePath + appInfo.getAppId()+"/"+imgName;
-            String imgFilePath=filePath + appInfo.getAppId();
-            File imgFilePath1 =new File(imgFilePath);
-            if(!imgFilePath1.exists()){
+            String pathName = filePath + appInfo.getAppId() + "/" + imgName;
+            String imgFilePath = filePath + appInfo.getAppId();
+            File imgFilePath1 = new File(imgFilePath);
+            if (!imgFilePath1.exists()) {
                 imgFilePath1.mkdirs();
             }
             File tmpFile = new File(pathName);
@@ -114,7 +117,7 @@ public class FileController extends BaseController {
             return paramsError();
         }
         try {
-        	PageInfo<AppInfo> result = fileService.getFiles(appInfoVo);
+            PageInfo<AppInfo> result = fileService.getFiles(appInfoVo);
             return queryOk(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,10 +136,12 @@ public class FileController extends BaseController {
 
         logger.info("增加或更新图片信息，参数：{}", JSON.toJSON(appInfoVo));
         try {
+            appInfoVo.setState(appInfoVo.getStateName());
+            System.err.println(appInfoVo.getState());
             boolean result = fileService.insertOrUpdateFile(appInfoVo);
-            if(result){
+            if (result) {
                 return updateOk(null);
-            }else{
+            } else {
                 return paramsError();
             }
         } catch (Exception e) {
@@ -145,12 +150,22 @@ public class FileController extends BaseController {
         }
     }
 
+    @RequestMapping(path = "/selectState", method = RequestMethod.GET)
+    @ApiOperation(value = "查询微应用状态", notes = "查询微应用状态")
+    @ApiResponses({@ApiResponse(code = 200, message = "处理成功", response = FileInfo.class)})
+    public String selectState() {
+
+        List<AppInfo> list = fileService.selectState();
+        return queryOk(list);
+    }
+
     /**
      * 显示单张图片
+     *
      * @return
      */
-    @RequestMapping(path = "/show",method = RequestMethod.GET)
-    public ResponseEntity showPhotos(String fileName){
+    @RequestMapping(path = "/show", method = RequestMethod.GET)
+    public ResponseEntity showPhotos(String fileName) {
 
         try {
             // 由于是读取本机的文件，file是一定要加上的， path是在application配置文件中的路径

@@ -35,7 +35,15 @@
     <id column="region" property="region"/>
   </resultMap>
   <select id="selectAppInfo" resultType="com.azxx.picture.vo.AppInfoVo">
-  	select * from file_apps_info
+  	select i.appId,
+  	i.appName,
+  	appType,
+  	i.version,
+  	d.name as stateName,
+  	i.releaseDate
+  	from file_apps_info i
+  	left join emp_dict d
+  	on i.state = d.dictid and d.dicttype = 'app_state'
   	where 1=1
   	<if test="appName != null and appName !=''" >
         and appname like concat('%',#{appName, jdbcType=VARCHAR},'%')
@@ -59,6 +67,11 @@
       select * from  file_apps_info
       where appid = #{appId}
 
+  </select>
+
+    <select id="selectState" resultType="com.azxx.picture.entity.Dict">
+      select * from  emp_dict
+      where dicttype = 'app_state'
   </select>
 
 </mapper>

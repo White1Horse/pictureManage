@@ -127,6 +127,17 @@ public class AppInfoVo {
     /**结束时间*/
     private String endTime;
 
+    /**状态名字*/
+    private String stateName;
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
     public String getId() {
         return Id;
     }
@@ -440,6 +451,52 @@ public class AppInfoVo {
     }
 
     @Override
+    public String toString() {
+        return "AppInfoVo{" +
+                "Id='" + Id + '\'' +
+                ", appId='" + appId + '\'' +
+                ", appName='" + appName + '\'' +
+                ", version='" + version + '\'' +
+                ", url='" + url + '\'' +
+                ", icon='" + icon + '\'' +
+                ", preview='" + preview + '\'' +
+                ", appType='" + appType + '\'' +
+                ", oldType='" + oldType + '\'' +
+                ", newType='" + newType + '\'' +
+                ", state='" + state + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", bundleId='" + bundleId + '\'' +
+                ", packageName='" + packageName + '\'' +
+                ", activityName='" + activityName + '\'' +
+                ", params='" + params + '\'' +
+                ", pList='" + pList + '\'' +
+                ", graypList='" + graypList + '\'' +
+                ", releasePolicy='" + releasePolicy + '\'' +
+                ", devId='" + devId + '\'' +
+                ", isCurrent=" + isCurrent +
+                ", description='" + description + '\'' +
+                ", urlScheme='" + urlScheme + '\'' +
+                ", entryUrl='" + entryUrl + '\'' +
+                ", updateInfo='" + updateInfo + '\'' +
+                ", isSkipGray=" + isSkipGray +
+                ", summary='" + summary + '\'' +
+                ", commentParams='" + commentParams + '\'' +
+                ", downAmount=" + downAmount +
+                ", appClass='" + appClass + '\'' +
+                ", region='" + region + '\'' +
+                ", updateDate=" + updateDate +
+                ", createUser='" + createUser + '\'' +
+                ", updateUser='" + updateUser + '\'' +
+                ", fileUrl='" + fileUrl + '\'' +
+                ", page=" + page +
+                ", rows=" + rows +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", stateName='" + stateName + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AppInfoVo)) return false;
@@ -482,56 +539,13 @@ public class AppInfoVo {
                 Objects.equals(page, appInfoVo.page) &&
                 Objects.equals(rows, appInfoVo.rows) &&
                 Objects.equals(startTime, appInfoVo.startTime) &&
-                Objects.equals(endTime, appInfoVo.endTime);
+                Objects.equals(endTime, appInfoVo.endTime) &&
+                Objects.equals(stateName, appInfoVo.stateName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, appId, appName, version, url, icon, preview, appType, oldType, newType, state, releaseDate, bundleId, packageName, activityName, params, pList, graypList, releasePolicy, devId, isCurrent, description, urlScheme, entryUrl, updateInfo, isSkipGray, summary, commentParams, downAmount, appClass, region, updateDate, createUser, updateUser, fileUrl, page, rows, startTime, endTime);
+        return Objects.hash(Id, appId, appName, version, url, icon, preview, appType, oldType, newType, state, releaseDate, bundleId, packageName, activityName, params, pList, graypList, releasePolicy, devId, isCurrent, description, urlScheme, entryUrl, updateInfo, isSkipGray, summary, commentParams, downAmount, appClass, region, updateDate, createUser, updateUser, fileUrl, page, rows, startTime, endTime, stateName);
     }
 
-    @Override
-    public String toString() {
-        return "AppInfoVo{" +
-                "Id=" + Id +
-                ", appId='" + appId + '\'' +
-                ", appName='" + appName + '\'' +
-                ", version='" + version + '\'' +
-                ", url='" + url + '\'' +
-                ", icon='" + icon + '\'' +
-                ", preview='" + preview + '\'' +
-                ", appType='" + appType + '\'' +
-                ", oldType='" + oldType + '\'' +
-                ", newType='" + newType + '\'' +
-                ", state='" + state + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", bundleId='" + bundleId + '\'' +
-                ", packageName='" + packageName + '\'' +
-                ", activityName='" + activityName + '\'' +
-                ", params='" + params + '\'' +
-                ", pList='" + pList + '\'' +
-                ", graypList='" + graypList + '\'' +
-                ", releasePolicy='" + releasePolicy + '\'' +
-                ", devId='" + devId + '\'' +
-                ", isCurrent=" + isCurrent +
-                ", description='" + description + '\'' +
-                ", urlScheme='" + urlScheme + '\'' +
-                ", entryUrl='" + entryUrl + '\'' +
-                ", updateInfo='" + updateInfo + '\'' +
-                ", isSkipGray=" + isSkipGray +
-                ", summary='" + summary + '\'' +
-                ", commentParams='" + commentParams + '\'' +
-                ", downAmount=" + downAmount +
-                ", appClass='" + appClass + '\'' +
-                ", region='" + region + '\'' +
-                ", updateDate=" + updateDate +
-                ", createUser='" + createUser + '\'' +
-                ", updateUser='" + updateUser + '\'' +
-                ", fileUrl='" + fileUrl + '\'' +
-                ", page=" + page +
-                ", rows=" + rows +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                '}';
-    }
 }

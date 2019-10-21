@@ -151,12 +151,13 @@ var fileManage = {
                     editable: false,
                     hidden: true
                 }, {
-                    name: 'state',
-                    index: 'state',
+                    name: 'stateName',
+                    index: 'stateName',
                     width: 50,
                     editable: true,
-                    edittype: "text",
-                    formatter: fmatterFuuc
+                    edittype: "select",
+                    editoptions: {style: "width:158.38px;height:37px", value: selectState()},
+                    //formatter: fmatterFuuc
 
                 }, {
                     name: 'releaseDate',
@@ -181,6 +182,7 @@ var fileManage = {
                             recreateForm: true,
                             closeAfterEdit: true,
                             beforeShowForm: beforeEditCallback,
+                            beforeSubmit: beforeSumbitCallback,
                             afterSubmit: afterSubmitCallback
                         }
                     }
@@ -250,7 +252,7 @@ var fileManage = {
                     $("#editmodgrid-table").css("left", "40%");
                 },
                 onInitializeForm: function (formid) {
-                   var addUrl = baseUrl + "/apps";
+                    var addUrl = baseUrl + "/apps";
                     console.log($(grid_selector).jqGrid('getGridParam', 'editurl'));
                     $(grid_selector).jqGrid('setGridParam', {editurl: addUrl});
                     $("#tr_fileToUpload").css("display", "");
@@ -300,6 +302,29 @@ var fileManage = {
                     // $(formid).attr('action', '/abc');
                     // $(formid).attr('enctype', 'multipart/form-data');
                 },
+                beforeSubmit: function beforeSumbit() {
+                    var fileTypes = [".jpeg", ".png", ".svg", ".jpg", ".gif"];
+                    var filePath = $('#fileToUpload').val();
+                    if (filePath) {
+                        var isNext = false;
+                        var fileEnd = filePath.substring(filePath.indexOf("."));
+                        for (var i = 0; i < fileTypes.length; i++) {
+                            if (fileTypes[i] === fileEnd) {
+                                isNext = true;
+                                break;
+                            }
+                        }
+                        if (!isNext) {
+                            alert(" 只接受以下类型图片：jpeg，png，svg，jpg，gif");
+                            return false;
+                        }
+                        return [true];
+                    } else {
+                        alert("请选择图片！")
+                        return false;
+                    }
+                },
+
                 afterSubmit: function (response, postdata) {
                     var res = $.parseJSON(response.responseText);
                     if (res.code != 200) {
@@ -308,7 +333,7 @@ var fileManage = {
                         return [false];
                         // return [false, res.msg];
                     } else {
-                        alert("图片上传成功！");
+                        //alert("图片上传成功！");
                         self.uploadFile(postdata);
                         return [true];
                     }
@@ -367,13 +392,33 @@ var fileManage = {
             $(grid_selector).jqGrid('setGridParam', {editurl: delUrl});
         }
 
+        function selectState() {
+            var stateListResult = "";
+            $.ajax({
+                type: "get",
+                async: false,
+                url: baseUrl + "/apps/selectState",
+                success: function (result) {
+                    var result = $.parseJSON(result);
+                    var stateList = result.data;
+                    for (i = 0; i < stateList.length; i++) {
+                        stateListResult += stateList[i].dictId + ":" + stateList[i].name + ";";
+                    }
+                }
+            });
+            if (stateListResult.length > 0) {
+                stateListResult=stateListResult.substring(0,stateListResult.length-1);
+            }
+            return stateListResult;
+        }
+
         function beforeEditCallback(e) {
             $("#editmodgrid-table").css("top", "20%");
             $("#editmodgrid-table").css("left", "40%");
             e.find('#appId').attr('readOnly', true);
             e.find('#appName').attr('readOnly', true);
             e.find('#version').attr('readOnly', true);
-            e.find('#state').attr('readOnly', true);
+            e.find('#stateName').attr('disabled', true);
             var form = $(e[0]);
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_edit_form(form);
@@ -390,9 +435,32 @@ var fileManage = {
                 return [false];
                 // return [false, res.msg];
             } else {
-                alert("图片上传成功！");
+                //alert("图片上传成功！");
                 self.uploadFile(postdata);
                 return [true];
+            }
+        }
+
+        function beforeSumbitCallback() {
+            var fileTypes = [".jpeg", ".png", ".svg", ".jpg", ".gif"];
+            var filePath = $('#fileToUpload').val();
+            if (filePath) {
+                var isNext = false;
+                var fileEnd = filePath.substring(filePath.indexOf("."));
+                for (var i = 0; i < fileTypes.length; i++) {
+                    if (fileTypes[i] === fileEnd) {
+                        isNext = true;
+                        break;
+                    }
+                }
+                if (!isNext) {
+                    alert(" 只接受以下类型图片：jpeg，png，svg，jpg，gif");
+                    return false;
+                }
+                return [true];
+            } else {
+                alert("请选择图片！")
+                return false;
             }
         }
 
@@ -446,12 +514,12 @@ var fileManage = {
             processData: false,
             success: function (data) {
                 $("#queryBtn").click();
-                console.log(">>>" + data);
-                if (data.status == "true") {
-                    alert("上传成功！");
-                }
-                if (data.status == "error") {
+                var data = $.parseJSON(data);
+                //   console.log(">>>" + data);
+                if (data.code != 200) {
                     alert(data.msg);
+                } else {
+                    alert("上传成功！");
                 }
             },
             error: function () {

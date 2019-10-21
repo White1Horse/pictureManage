@@ -22,4 +22,5 @@ public interface FileInfoMapper extends BaseMapper<AppInfo> {
 
 	AppInfo getAppByAppId(String appId);
 
+	List<AppInfo> selectState();
 }
