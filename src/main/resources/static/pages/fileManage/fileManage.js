@@ -303,7 +303,7 @@ var fileManage = {
                     // $(formid).attr('enctype', 'multipart/form-data');
                 },
                 beforeSubmit: function beforeSumbit() {
-                    var fileTypes = [".jpeg", ".png", ".svg", ".jpg", ".gif"];
+                    var fileTypes = [".jpeg", ".png",".jpg", ".gif"];
                     var filePath = $('#fileToUpload').val();
                     if (filePath) {
                         var isNext = false;
@@ -315,7 +315,7 @@ var fileManage = {
                             }
                         }
                         if (!isNext) {
-                            alert(" 只接受以下类型图片：jpeg，png，svg，jpg，gif");
+                            alert(" 只接受图片类型！");
                             return false;
                         }
                         return [true];
@@ -442,7 +442,7 @@ var fileManage = {
         }
 
         function beforeSumbitCallback() {
-            var fileTypes = [".jpeg", ".png", ".svg", ".jpg", ".gif"];
+            var fileTypes = [".jpeg", ".png",".jpg",];
             var filePath = $('#fileToUpload').val();
             if (filePath) {
                 var isNext = false;
@@ -454,7 +454,7 @@ var fileManage = {
                     }
                 }
                 if (!isNext) {
-                    alert(" 只接受以下类型图片：jpeg，png，svg，jpg，gif");
+                    alert("只接受图片类型");
                     return false;
                 }
                 return [true];
